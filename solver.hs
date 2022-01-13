@@ -6,7 +6,7 @@ module Main where
 import Control.Applicative
 import Control.Monad
 import Data.Function
-import Data.List (maximumBy, sortBy, (\\))
+import Data.List
 import qualified Data.List as M
 import Data.Map (Map)
 import qualified Data.Map as M
@@ -14,6 +14,7 @@ import Data.Maybe
 import Data.Ord
 import Data.Set (Set)
 import qualified Data.Set as S
+
 
 --- hint returned by wordle
 --          exact   invalid   wrong
@@ -70,18 +71,17 @@ parseRes = map f
     f 'I' = I
     f _ = undefined
 
--- play :: t1 -> t2
-play l = go firstWord l
+play l s = go firstWord l
   where
     firstWord = cans l
     go w l = do
-      putStrLn (show (length l) ++ " candidates left")
+      putStrLn (show (length (intersect l s)) ++ " solutions left")
       putStrLn ("Guess: " ++ w)
       putStr "Enter response: "
       r <- getLine
       let res = flip (zipWith ($)) w . parseRes $ r
       let (w', l') = turn w res l
-      case l' of
+      case intersect l' s of
         [sol] -> putStrLn $ "Solution: " ++ sol
         [] -> putStrLn "No solution!"
         _ -> go w' l'
@@ -89,7 +89,6 @@ play l = go firstWord l
 play' l firstWord hidden = go firstWord l [firstWord]
   where
     tl = topFiveLetters l
-    -- firstWord = cans l
     go _ [sol] acc = reverse acc
     go _ [] acc = []
     go w l acc = go w' l' (w' : acc)
@@ -107,5 +106,6 @@ showGuess = map f
 
 main :: IO ()
 main = do
-  l <- lines <$> readFile "words.txt"
-  play l
+  l <- lines <$> readFile "guesses.txt"
+  s <- lines <$> readFile "solutions.txt"
+  play l s
