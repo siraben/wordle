@@ -71,17 +71,17 @@ parseRes = map f
     f 'I' = I
     f _ = undefined
 
-play l s = go firstWord l
+play l = go firstWord l
   where
     firstWord = cans l
     go w l = do
-      putStrLn (show (length (intersect l s)) ++ " solutions left")
+      putStrLn (show (length l) ++ " solutions left")
       putStrLn ("Guess: " ++ w)
       putStr "Enter response: "
       r <- getLine
       let res = flip (zipWith ($)) w . parseRes $ r
       let (w', l') = turn w res l
-      case intersect l' s of
+      case l' of
         [sol] -> putStrLn $ "Solution: " ++ sol
         [] -> putStrLn "No solution!"
         _ -> go w' l'
@@ -89,6 +89,7 @@ play l s = go firstWord l
 play' l firstWord hidden = go firstWord l [firstWord]
   where
     tl = topFiveLetters l
+    firstWord = cans l
     go _ [sol] acc = reverse acc
     go _ [] acc = []
     go w l acc = go w' l' (w' : acc)
@@ -106,6 +107,5 @@ showGuess = map f
 
 main :: IO ()
 main = do
-  l <- lines <$> readFile "guesses.txt"
   s <- lines <$> readFile "solutions.txt"
-  play l s
+  play s
