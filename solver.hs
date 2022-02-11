@@ -107,5 +107,7 @@ showGuess = map f
 
 main :: IO ()
 main = do
+  putStrLn "Use the guess returned by the solver and input 5 letters {W,E,I}."
+  putStrLn "W = Wrong, E = Exact, I = Included"
   s <- lines <$> readFile "solutions.txt"
   play s

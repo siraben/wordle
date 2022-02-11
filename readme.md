@@ -10,16 +10,21 @@ with the letter frequency.  In my testing I consistently get around
 3-4 attempts.
 
 ## Usage
-Input the response given by the game.  `W` for wrong letter (gray),
-`I` for inclusion (yellow), `E` for exact (green).
+Input the response given by the game.  `W` for a wrong letter (gray),
+`I` for an included letter (yellow), `E` for an exact match (green).
 
 ```
 $ runhaskell solver.hs
+Use the guess returned by the solver and input 5 letters {W,E,I}.
+W = Wrong, E = Exact, I = Included
 2315 solutions left
-Guess: soare
-Enter response: WWIWI
-68 solutions left
-Guess: naled
-Enter response: WIWEW
-Solution: abbey
+Guess: aorta
+Enter response: IWWWW
+243 solutions left
+Guess: scale
+Enter response: IWIWE
+2 solutions left
+Guess: pause
+Enter response: EEEEE
+Solution: pause
 ```
