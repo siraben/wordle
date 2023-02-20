@@ -92,7 +92,7 @@ play' l firstWord hidden = go firstWord l [firstWord]
     firstWord = cans l
     go _ [sol] acc = reverse acc
     go _ [] acc = []
-    go w l acc = go w' l' (w' : acc)
+    go w l acc = go w' (if w' == hidden then [w'] else l') (w' : acc)
       where
         r = showGuess (guess w hidden)
         res = flip (zipWith ($)) w . parseRes $ r
@@ -111,3 +111,6 @@ main = do
   putStrLn "W = Wrong, E = Exact, I = Included"
   s <- lines <$> readFile "solutions.txt"
   play s
+  -- code to evaluate to performance of the solver
+  -- let l = map (length . play' s "aorta") s
+  -- print $ fromIntegral (sum l) / fromIntegral (length l)
